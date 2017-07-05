@@ -1,3 +1,6 @@
+__author__ = 'Patrick Luboobi'
+
+
 def find_max_min(arg_list) -> list:
     """
     Finds max and minimum number from a list and returns them in list
