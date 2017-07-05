@@ -2,6 +2,7 @@
 This example uses docopt with the built in cmd module to demonstrate an
 interactive command application.
 Usage:
+    (News) view_sources   
     (News) get_news <source>   
     (News) (-i | --interactive)
     (News) (-h | --help)
@@ -18,7 +19,6 @@ from docopt import docopt, DocoptExit
 import json
 from urllib.request import Request, urlopen
 from urllib.error import URLError, HTTPError
-
 
 def docopt_cmd(func):
     """
@@ -53,11 +53,17 @@ def docopt_cmd(func):
 
 
 class NewsFeed(cmd.Cmd):
-    intro = 'Welcome to THE NEWS APP!' \
-            + ' (type help for a list of commands.)'
-    prompt = 'News At Your Finger Tips\n'
+    intro = 'Welcome to THE TECH NEWS APP!'
+    prompt = 'Tech News At Your Finger Tips\n' \
+              + ' (type help for a list of commands.)'
+
 
     file = None
+
+    @docopt_cmd
+    def do_view_sources(self, arg):
+        """Usage: view_sources """
+        self.sources()
 
     @docopt_cmd
     def do_get_news(self, arg):
@@ -71,6 +77,13 @@ class NewsFeed(cmd.Cmd):
         print('******Good Bye!******')
         exit()
 
+    def sources(self):
+        sources = ['techcrunch', 'techradar', 'ars-technica']
+        for source in sources:
+            print(source)
+        return sources
+
+
     def fetch_news(self, source):
         """
         Http Client to interact with NASA's public APi
@@ -78,34 +91,39 @@ class NewsFeed(cmd.Cmd):
         Args:
             source: News Source
         """
-        api_key = '51ffb1a860b7437cbd213e7e16c1c5c7'
-
-        print('Fetching News from ' + source + '.................\n')
-        req_url = 'https://newsapi.org/v1/articles?source=' + source + '&apiKey=' + api_key
-        req = Request(req_url)
-        try:
-            response = urlopen(req)
-
-        # Returns error from server
-        except HTTPError as e:
-            print('The server couldn\'t fulfill the request.')
-            print('Error code: ', e.code)
-
-        # Returns error if server is unreachable
-        except URLError as e:
-            print('We failed to reach a server.')
-            print('Reason: ', e.reason)
-
-        # json parse the response to print only the relevant information
+        sources = ['google-news', 'hacker-news', 'techcrunch',
+                   'techradar', 'ars-technica']
+        if source not in sources:
+            print('Invalid Source')
         else:
-            json_obj = json.load(response)
-            print('Source:' + json_obj['source'] + '\n')
-            for article in json_obj['articles']:
-                print('Author: ' + article['author'] + '\n')
-                print('Title: ' + article['title'] + '\n')
-                print('Article: ' + article['description'] + '\n')
+            api_key = '51ffb1a860b7437cbd213e7e16c1c5c7'
 
-                print('=========================================')
+            print('Fetching News from ' + source + '.................\n')
+            req_url = 'https://newsapi.org/v1/articles?source=' + source + '&apiKey=' + api_key
+            req = Request(req_url)
+            try:
+                response = urlopen(req)
+
+            # Returns error from server
+            except HTTPError as e:
+                print('The server couldn\'t fulfill the request.')
+                print('Error code: ', e.code)
+
+            # Returns error if server is unreachable
+            except URLError as e:
+                print('We failed to reach a server.')
+                print('Reason: ', e.reason)
+
+            # json parse the response to print only the relevant information
+            else:
+                json_obj = json.load(response)
+                print('Source:' + json_obj['source'] + '\n')
+                for article in json_obj['articles']:
+                    print('Author: ' + article['author'] + '\n')
+                    print('Title: ' + article['title'] + '\n')
+                    print('Article: ' + article['description'] + '\n')
+
+                    print('=========================================')
 
 
 opt = docopt(__doc__, sys.argv[1:])
