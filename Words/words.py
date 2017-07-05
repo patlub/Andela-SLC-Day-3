@@ -3,17 +3,17 @@ __author__ = 'Patrick Luboobi'
 
 def words(string) -> dict:
     """
-        Function to count each Words in sentence
-        and store results in a dictionary
+    Function to count each Words in sentence
+    and store results in a dictionary
 
-        Args:
-            string: A sentence of Words
-        Raises:
-            TypeError: If Argument is not a string
-        Returns:
-            dict: Each word and the number of times 
-                  it occurs  
-        """
+    Args:
+        string: A sentence of Words
+    Raises:
+        TypeError: If Argument is not a string
+    Returns:
+        dict: Each word and the number of times 
+              it occurs  
+    """
 
     # Check argument type
     if not isinstance(string, str):
