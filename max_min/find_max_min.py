@@ -16,3 +16,22 @@ def find_max_min(arg_list) -> list:
     # All list items should be numbers
     elif not all(isinstance(item, int) for item in arg_list):
         raise ValueError('All list items should be integers')
+
+    else:
+        output_list = []
+
+        # Sort list first
+        arg_list.sort()
+
+        first = arg_list[0]
+        last = arg_list[len(arg_list) - 1]
+
+        # Append minimum element to list
+        output_list.append(first)
+
+        # If min and max are not equal
+        # Append max to list too
+        if first != last:
+            output_list.append(last)
+
+        return output_list
